@@ -56,7 +56,6 @@ router.post('/createUser', [
 });
 
 
-
 // ROUTE 2 : authenticate a user using : /api/auth/login. No login required
 router.post('/login', [
   body('email', 'Enter a valid email').isEmail(),
@@ -100,7 +99,6 @@ router.post('/login', [
     return res.status(500).json({ error: 'Server Error' });
   }
 });
-
 
 
 // ROUTE 3 : get logged in user details : POST "/api/auth/getuser". login required

@@ -23,7 +23,7 @@ router.post('/addnote', fetchuser, [
 
     // in case errors exist, return a bad request and the error
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if(!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -32,7 +32,7 @@ router.post('/addnote', fetchuser, [
       title, description, tag, user: req.user.id
     });
     let savedNote = await note.save();
-    res.json({savedNote});
+    res.json({ savedNote });
   } 
   catch(error) {
     console.error(`Error: ${error.message}`);
@@ -42,7 +42,11 @@ router.post('/addnote', fetchuser, [
 
 
 // ROUTE 3 : update an existing note : PUT -> /api/notes/updatenote -> login required
-router.put('/updatenote/:id', fetchuser, async (req, res) => {
+router.put('/updatenote/:id', fetchuser, [
+  body('title', 'Enter a valid title').optional().isLength({ min: 3 }),
+  body('description', 'Description must be at least 5 characters long').optional().isLength({ min: 5 }),
+  body('tag', 'Tag must be a string').optional().isString(),
+], async (req, res) => {
   try {
     const { title, description, tag } = req.body;  
     
@@ -76,10 +80,46 @@ router.put('/updatenote/:id', fetchuser, async (req, res) => {
     }
 
     // set the chosen fields of note to those of newNote
-    note = await Notes.findByIdAndUpdate(req.params.id, {$set: newNote}, {new: true});
+    note = await Notes.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true });
     res.json({ note });
   } 
   catch(error) {
+    console.error(`Error: ${error.message}`);
+    return res.status(500).json({ error: 'Server Error' });
+  }
+});
+
+
+// ROUTE 4 : delete a note : DELETE -> /api/notes/deletenote -> login required
+router.delete('/deletenote/:id', fetchuser, [
+  body('title', 'Enter a valid title').optional().isLength({ min: 3 }),
+  body('description', 'Description must be at least 5 characters long').optional().isLength({ min: 5 }),
+  body('tag', 'Tag must be a string').optional().isString(),
+], async (req, res) => {
+  try {
+    
+    // in case errors exist, return a bad request and the error
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // find the note to be deleted and delete it
+    let note = await Notes.findById(req.params.id);
+    if(!note) {
+      // the note to be deleted does not exist in the database
+      return res.status(404).send('Not found');
+    }
+    if(note.user.toString() !== req.user.id) {
+      // the user trying to update is someone else
+      return res.status(401).send('Unauthorized access');
+    }
+
+    // set the chosen fields of note to those of newNote
+    note = await Notes.findByIdAndDelete(req.params.id);
+    res.json({ "Success": "Note deleted", note });
+  } 
+  catch (error) {
     console.error(`Error: ${error.message}`);
     return res.status(500).json({ error: 'Server Error' });
   }
