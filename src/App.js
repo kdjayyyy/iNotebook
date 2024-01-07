@@ -1,11 +1,32 @@
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import About from './components/About';
 
 const App = () => {
   return (
     <>
-      <div className="container">
-        <h1>This is iNotebook</h1>
-      </div>
+      <Router>
+        <Navbar title='iNotebook' />
+
+        <Switch>
+
+          <Route path="/">;
+            <Home />
+          </Route>
+
+          <Route exact path="/about">
+            <About/>
+          </Route>
+
+        </Switch>
+
+      </Router>
     </>
   );
 }
