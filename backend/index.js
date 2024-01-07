@@ -2,7 +2,7 @@ const connectToMongo = require('./db');
 const express = require('express');
 const authRouter = require('./routes/auth');
 const notesRouter = require('./routes/notes');
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 
 const app = express();
 const port = 5000;
