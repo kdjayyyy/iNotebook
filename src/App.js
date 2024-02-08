@@ -7,26 +7,27 @@ import {
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
+import NoteState from './context/notes/NoteState';
 
 const App = () => {
   return (
     <>
-      <Router>
-        <Navbar title='iNotebook' />
+      <NoteState>
+        <Router>
+          <Navbar title='iNotebook' />
+          <Switch>
 
-        <Switch>
+            <Route exact path="/">
+              <Home/>
+            </Route>
 
-          <Route path="/">;
-            <Home />
-          </Route>
+            <Route exact path="/about">
+              <About/>
+            </Route>
 
-          <Route exact path="/about">
-            <About/>
-          </Route>
-
-        </Switch>
-
-      </Router>
+          </Switch>
+        </Router>
+      </NoteState>
     </>
   );
 }
