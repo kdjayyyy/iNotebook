@@ -4,18 +4,11 @@ import NoteContext from '../context/notes/NoteContext';
 
 const About = () => {
 
-  const contextData = useContext(NoteContext);
-  
-  useEffect(() => {
-    if(contextData && contextData.state)
-      contextData.update();
-  }, [contextData]);
-
   return (
     <>
-      {contextData && contextData.state && (
-        <p>This is about {contextData.state.name} and he is from class {contextData.state.class}</p>    
-      )}
+      <div className="container">
+        This is the About page.
+      </div>
     </>
   )
 }

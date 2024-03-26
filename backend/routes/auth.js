@@ -105,6 +105,7 @@ router.post('/login', [
 router.get('/getuser', fetchuser, async (req, res) => {
   try {
     userId = req.user.id;
+    // do not include the password during selection of the user
     const user = await User.findById(userId).select('-password');
     return res.send(user);
   } 

@@ -15,17 +15,21 @@ const App = () => {
       <NoteState>
         <Router>
           <Navbar title='iNotebook' />
-          <Switch>
 
-            <Route exact path="/">
-              <Home/>
-            </Route>
+          <div className="container">
+            <Switch>
 
-            <Route exact path="/about">
-              <About/>
-            </Route>
+              <Route exact path="/">
+                <Home />
+              </Route>
 
-          </Switch>
+              <Route exact path="/about">
+                <About />
+              </Route>
+
+            </Switch>
+          </div>
+
         </Router>
       </NoteState>
     </>
