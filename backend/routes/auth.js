@@ -79,7 +79,7 @@ router.post('/login', [
 
     // password comparison
     let passwordCompare = await bcrypt.compare(password, user.password);
-    if (!passwordCompare) {
+    if(!passwordCompare) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 

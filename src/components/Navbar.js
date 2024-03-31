@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from "react-router-dom";
 
 const Navbar = (props) => {
 
   // useLocation hook
   let location = useLocation();
-  React.useEffect(() => {
-    console.log(location);
+  useEffect(() => {
+    
   }, [location]);
 
   return (
