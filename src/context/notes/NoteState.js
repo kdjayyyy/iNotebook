@@ -3,10 +3,10 @@ import NoteContext from './NoteContext'
 // import { useSyncExternalStore } from 'react';
 
 const NoteState = (props) => {
-  const host = "localhost:5000";
+  const host = "http://localhost:5000";
   const notesInitial = [];
-
   const [notes, setNotes] = useState(notesInitial);
+
 
   // add a note
   const addNote = async (title, description, tag) => {
@@ -64,9 +64,9 @@ const NoteState = (props) => {
     // const json = response.json();
 
     // function logic
-    for(let i = 0; i < notes.length; i++) {
+    for (let i = 0; i < notes.length; i++) {
       const element = notes[i];
-      if(element._id === id) {
+      if (element._id === id) {
         element.title = title;
         element.description = description;
         element.tag = tag;
@@ -74,10 +74,22 @@ const NoteState = (props) => {
     }
   }
 
-  
-  const deleteNote = (id) => {
-    console.log(`id of the deleted note is ${id}`)
-    const newNotes = notes.filter((note) => {return note._id !== id});
+
+  const deleteNote = async (id) => {
+
+    // API CALL
+    const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+      method: 'DELETE',
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjU5NjFmMjQxODZhNDNiYzcxNTVkMDI0In0sImlhdCI6MTcwNDQ4NjMzOH0.ZKs2jvkic-a1JZsRAYQBc7o1CrziHA3Um6M-9tu6EQQ"
+      }
+    });
+
+    const json = response.json();
+    console.log(json);
+    // console.log(`id of the deleted note is ${id}`)
+    const newNotes = notes.filter((note) => { return note._id !== id });
     setNotes(newNotes);
   }
 
